@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    provides: rhevm
+    app: rhevm
+  name: rhevm
+  namespace: virt
+spec:
+  clusterIP: 10.254.1.9
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    protocol: TCP
+  selector:
+    app: rhevm
+    provides: rhevm
+  type: ClusterIP

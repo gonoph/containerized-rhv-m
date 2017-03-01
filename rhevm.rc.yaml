@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: rhevm
+  namespace: virt
+spec:
+  replicas: 1
+  selector:
+    app: rhevm
+    ver: v1
+    provides: rhevm
+  template:
+    metadata:
+      name: rhevm
+      labels:
+        app: rhevm
+        ver: v1
+        provides: rhevm
+    spec:
+      containers:
+      - name: httpd
+        image: my-local-registry.example.com/rhel7/rhevm:4.0-0
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+        env:
+          - name: TZ
+            value: "America/New_York"
+        args:
+          - httpd
+        ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          - name: https
+            containerPort: 443
+            protocol: TCP
+        volumeMounts: []
+      - name: engine
+        image: my-local-registry.example.com/rhel7/rhevm:4.0-0
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 3Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        env:
+          - name: TZ
+            value: "America/New_York"
+        args:
+          - engine
+        ports: []
+        volumeMounts: []
+      - name: engine-dwh
+        image: my-local-registry.example.com/rhel7/rhevm:4.0-0
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 3Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        env:
+          - name: TZ
+            value: "America/New_York"
+        args:
+          - engine-dwh
+        ports: []
+        volumeMounts: []
+      - name: websocket
+        image: my-local-registry.example.com/rhel7/rhevm:4.0-0
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        env:
+          - name: TZ
+            value: "America/New_York"
+        args:
+          - websocket
+        ports: []
+        volumeMounts: []
+      volumes: []
+      nodeSelector: {}
