@@ -74,7 +74,7 @@ kubectl create -f rhevm.service.yaml
 License
 -------
 
-GPLv2
+GPLv3
 
 Author Information
 ------------------
